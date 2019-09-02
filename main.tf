@@ -60,11 +60,9 @@ resource "aws_instance" "nat" {
 
       # If we are using a bastion host ssh in via the private IP
       # If we set this to an empty string we get the default behaviour.
-      host = "${var.ssh_bastion_host != "" ? self.private_ip : ""}"
+      host = "${self.public_ip}"
 
       private_key  = "${var.aws_private_key}"
-      bastion_host = "${var.ssh_bastion_host}"
-      bastion_user = "${var.ssh_bastion_user}"
     }
   }
 }
