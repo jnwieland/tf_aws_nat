@@ -49,20 +49,4 @@ resource "aws_instance" "nat" {
   vpc_security_group_ids = "${var.vpc_security_group_ids}"
   tags                   = "${merge(var.tags, map("Name", format("%s-nat-%s", var.name, var.region)))}"
   user_data              = "${element(data.template_file.user_data.*.rendered, count.index)}"
-
-  provisioner "remote-exec" {
-    inline = [
-      "while sudo pkill -0 cloud-init; do sleep 2; done",
-    ]
-
-    connection {
-      user = "ubuntu"
-
-      # If we are using a bastion host ssh in via the private IP
-      # If we set this to an empty string we get the default behaviour.
-      host = "${self.public_ip}"
-
-      private_key  = "${var.aws_private_key}"
-    }
-  }
 }
