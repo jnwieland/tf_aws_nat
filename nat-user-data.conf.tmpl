@@ -79,5 +79,5 @@ runcmd:
  - [ iptables, -I, INPUT, -i, lo, -j, ACCEPT ]
  - [ iptables, -A, INPUT, -j, LOGGINGI ]
  - [ iptables, -P, INPUT, DROP ]
- - [ sh, -c, "which AWSnycast || { cd /tmp && wget ${awsnycast_deb_url} && dpkg -i awsnycast_*.deb && rm *.deb; }" ]
+ - [ sh, -c, "which AWSnycast || { cd /tmp && wget https://s3.us-east-2.amazonaws.com/maintenance.signupgenius.com/AWSnycast && mv AWSnycast /usr/bin/AWSnycast && chmod +x /usr/bin/AWSnycast; }" ]
  - [ systemctl, start, awsnycast ]
