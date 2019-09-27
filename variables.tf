@@ -7,7 +7,7 @@ variable "tags" {
 }
 
 variable "ami_name_pattern" {
-  default     = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"
+  default     = "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-arm64-*"
   description = "The name filter to use in data.aws_ami"
 }
 
