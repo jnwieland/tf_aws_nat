@@ -41,7 +41,7 @@ data "template_file" "user_data" {
 resource "aws_eip_association" "eip_assoc" {
     instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
     allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
-    count = "$(var.instance_count}"
+    count = "${var.instance_count}"
 }
 
 
