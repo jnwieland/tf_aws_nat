@@ -43,12 +43,6 @@ resource "aws_eip" "nat" {
   count   = "${var.instance_count}"
 }
 
-resource "aws_eip_association" "eip_assoc" {
-  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
-  allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
-  count   = "${var.instance_count}"
-}
-
 resource "aws_instance" "nat" {
   count                  = "${var.instance_count}"
   ami                    = "${data.aws_ami.ami.id}"
@@ -60,4 +54,10 @@ resource "aws_instance" "nat" {
   vpc_security_group_ids = "${var.vpc_security_group_ids}"
   tags                   = "${merge(var.tags, map("Name", format("%s-nat-%s", var.name, "test")))}"
   user_data              = "${element(data.template_file.user_data.*.rendered, count.index)}"
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
+  allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
+  count   = "${var.instance_count}"
 }
