@@ -1,10 +1,10 @@
 resource "aws_iam_instance_profile" "nat_profile" {
   name = var.name
-  role = "${aws_iam_role.role.name}"
+  role = "${aws_iam_role.role.name}-nat"
 }
 
 resource "aws_iam_role" "role" {
-  name = var.name
+  name = "${aws_iam_role.role.name}-nat"
   path = "/"
 
   assume_role_policy = <<EOF
@@ -37,6 +37,7 @@ resource "aws_iam_role_policy" "modify_routes" {
                 "ec2:DeleteRoute",
                 "ec2:DescribeRouteTables",
                 "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeInstanceStatus",
                 "ec2:DescribeInstanceAttribute"
             ],
             "Effect": "Allow",
