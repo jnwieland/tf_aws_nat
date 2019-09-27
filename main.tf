@@ -39,8 +39,9 @@ data "template_file" "user_data" {
 }
 
 resource "aws_eip" "nat" {
-  vpc     = true
-  count   = "${var.instance_count}"
+  vpc       = true
+  count     = "${var.instance_count}"
+  instance  = "${element(aws_instance.nat.*.id, count.index)}"
 }
 
 resource "aws_instance" "nat" {
@@ -54,10 +55,4 @@ resource "aws_instance" "nat" {
   vpc_security_group_ids = "${var.vpc_security_group_ids}"
   tags                   = "${merge(var.tags, map("Name", format("%s-nat-%s", var.name, "test")))}"
   user_data              = "${element(data.template_file.user_data.*.rendered, count.index)}"
-}
-
-resource "aws_eip_association" "eip_assoc" {
-  count   = "${var.instance_count}"
-  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
-  allocation_id = aws_eip.nat[count.index].id
 }
