@@ -57,7 +57,7 @@ resource "aws_instance" "nat" {
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
-  allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
   count   = "${var.instance_count}"
+  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
+  allocation_id = aws_eip.nat[count.index]id, count.index)}"
 }
