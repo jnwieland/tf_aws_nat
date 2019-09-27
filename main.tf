@@ -41,7 +41,11 @@ data "template_file" "user_data" {
 resource "aws_eip" "nat" {
   vpc       = true
   count     = "${var.instance_count}"
-  instance  = "${element(aws_instance.nat.*.id, count.index)}"
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = "${element(aws_instance.nat.*.id, count.index)}"
+  allocation_id = "${element(aws_eip.nat.*.id, count.index)}"
 }
 
 resource "aws_instance" "nat" {
